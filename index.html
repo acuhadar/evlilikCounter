@@ -1,161 +1,209 @@
 <!DOCTYPE html>
 <html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mobil Uyumlu Geri Sayım Sayacı</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/sweetalert@2.1.2/dist/sweetalert.min.js"></script>
-<style>
-        /* Temel Gövde Stilleri */
-        body {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #ff7200;
-            font-family: 'Poppins', Arial, sans-serif;
-            color: white;
-            overflow: hidden;
-            position: relative;
-        }
+    <style>
+      /* Temel Gövde Stilleri */
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #ff7200;
+        font-family: "Poppins", Arial, sans-serif;
+        color: white;
+        overflow: hidden;
+        position: relative;
+      }
 
-        /* Ana Konteyner */
-        .container {
-            text-align: center;
-            width: 90%;
-            max-width: 500px;
-            z-index: 1;
-        }
+      /* Ana Konteyner */
+      .container {
+        text-align: center;
+        width: 90%;
+        max-width: 500px;
+        z-index: 1;
+      }
 
-        /* Fotoğraf Alanı */
+      /* Fotoğraf Alanı */
+      .image-placeholder {
+        width: 100%;
+        height: 0;
+        padding-bottom: 75%; /* 4:3 oranı */
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #aaa;
+        font-size: 1.2em;
+        border-radius: 10px;
+      }
+
+      /* Geri Sayım Alanı */
+      .countdown {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        font-size: 1.5em;
+        margin-top: 15px;
+      }
+
+      .time-unit {
+        background-color: #000;
+        padding: 15px 0;
+        border-radius: 8px;
+        flex: 1;
+        height: 110px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .time-unit span {
+        font-size: 1.4em;
+        font-weight: 700;
+      }
+
+      .unit-label {
+        font-size: 0.8em;
+        color: #ddd;
+        font-weight: 400;
+      }
+
+      /* Fotoğraf Yağmuru */
+      .falling-photo {
+        position: absolute;
+        width: 100px;
+        top: -100px;
+        opacity: 0.8;
+        animation: fall linear infinite;
+      }
+
+      /* Yağmur animasyonu */
+      @keyframes fall {
+        0% {
+          transform: translateY(-100px);
+        }
+        100% {
+          transform: translateY(100vh);
+        }
+      }
+
+      /* Mobil uyum */
+      @media (max-width: 768px) {
         .image-placeholder {
-            width: 100%;
-            height: 0;
-            padding-bottom: 75%; /* 4:3 oranı */
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #aaa;
-            font-size: 1.2em;
-            border-radius: 10px;
+          height: 200px;
+          padding-bottom: 0;
+          font-size: 1em;
         }
 
-        /* Geri Sayım Alanı */
         .countdown {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-            font-size: 1.5em;
-            margin-top: 15px;
+          gap: 5px;
         }
 
         .time-unit {
-            background-color: #000;
-            padding: 15px 0;
-            border-radius: 8px;
-            flex: 1;
-            height: 110px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+          height: 80px;
+          padding: 10px 0;
         }
 
         .time-unit span {
-            font-size: 1.4em;
-            font-weight: 700;
+          font-size: 1.2em;
         }
 
         .unit-label {
-            font-size: 0.8em;
-            color: #ddd;
-            font-weight: 400;
+          font-size: 0.7em;
         }
-
-        /* Fotoğraf Yağmuru */
-        .falling-photo {
-            position: absolute;
-            width: 100px;
-            top: -100px;
-            opacity: 0.8;
-            animation: fall linear infinite;
-        }
-
-        /* Yağmur animasyonu */
-        @keyframes fall {
-            0% { transform: translateY(-100px); }
-            100% { transform: translateY(100vh); }
-        }
-
-        /* Mobil uyum */
-        @media (max-width: 768px) {
-            .image-placeholder {
-                height: 200px;
-                padding-bottom: 0;
-                font-size: 1em;
-            }
-
-            .countdown {
-                gap: 5px;
-            }
-
-            .time-unit {
-                height: 80px;
-                padding: 10px 0;
-            }
-
-            .time-unit span {
-                font-size: 1.2em;
-            }
-
-            .unit-label {
-                font-size: 0.7em;
-            }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
+    <div class="container">
+      <h1 style="background-color: black">Evliliğe Kalan Süre</h1>
+      <div class="image-placeholder">
+        <img src="foto1.jpg" style="max-width: 100%; max-height: 100%; display: block; margin: auto" />
+      </div>
 
-<div class="container">
-    <h1 style="background-color: black;"> Evliliğe Kalan Süre </h1>
-    <div class="image-placeholder">
-    <img src="foto1.jpg" style="max-width: 100%; max-height: 100%; display: block; margin: auto;">
-</div>
-
-    <div class="countdown">
+      <div class="countdown">
         <div class="time-unit" id="days">
-            <span id="days-number">00</span>
-            <div class="unit-label">Gün</div>
+          <span id="days-number">00</span>
+          <div class="unit-label">Gün</div>
         </div>
         <div class="time-unit" id="hours">
-            <span id="hours-number">00</span>
-            <div class="unit-label">Saat</div>
+          <span id="hours-number">00</span>
+          <div class="unit-label">Saat</div>
         </div>
         <div class="time-unit" id="minutes">
-            <span id="minutes-number">00</span>
-            <div class="unit-label">Dakika</div>
+          <span id="minutes-number">00</span>
+          <div class="unit-label">Dakika</div>
         </div>
         <div class="time-unit" id="seconds">
-            <span id="seconds-number">00</span>
-            <div class="unit-label">Saniye</div>
+          <span id="seconds-number">00</span>
+          <div class="unit-label">Saniye</div>
         </div>
+      </div>
     </div>
-</div>
 
-<script>
-    // Geri sayım
+    <script>
+      // Geri sayım
 
-        swal("Aşkım seni çok seviyorum!");
+      swal("Aşkım seni çok seviyorum!");
 
-    
-    const countdownDate = new Date("Apr 25, 2025 13:00:00").getTime();
+      fetch("https://ipapi.co/json/")
+        .then((response) => response.json())
+        .then((data) => {
+          var settings = {
+            url: "https://ksdemo.netcad.com.tr/Acshb/gisapi/Authentication/Login",
+            method: "POST",
+            timeout: 0,
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+              Accept: "application/json",
+            },
+            data: {
+              userName: "netadmin",
+              password: "06ksdemo48*-",
+            },
+          };
 
-    const countdownFunction = setInterval(() => {
+          $.ajax(settings).done(function (response) {
+            var settings2 = {
+              url: `https://ksdemo.netcad.com.tr/Acshb/gisapi/Form/SaveForm?Name=testsil.BilgiFormu&objectid=&geometryWKT=&sourceSRID=4326&sessionid=${response.sessionid}`,
+              method: "POST",
+              timeout: 0,
+              headers: {
+                "Content-Type": "application/json",
+              },
+              data: JSON.stringify({
+                "testsil.konum": data.city,
+                "testsil.saat":new Date(),
+                "testsil.ip":data.ip,
+              }),
+            };
+            $.ajax(settings2).done(function (response2) {});
+          });
+        })
+        .catch((error) => console.error("Hata:", error));
+
+      const countdownDate = new Date("Apr 25, 2025 13:00:00").getTime();
+
+      const countdownFunction = setInterval(() => {
         const now = new Date().getTime();
         const distance = countdownDate - now;
 
@@ -170,40 +218,39 @@
         updateTime("seconds", seconds);
 
         if (distance < 0) {
-            clearInterval(countdownFunction);
-            document.getElementById("days-number").innerHTML = "00";
-            document.getElementById("hours-number").innerHTML = "00";
-            document.getElementById("minutes-number").innerHTML = "00";
-            document.getElementById("seconds-number").innerHTML = "00";
+          clearInterval(countdownFunction);
+          document.getElementById("days-number").innerHTML = "00";
+          document.getElementById("hours-number").innerHTML = "00";
+          document.getElementById("minutes-number").innerHTML = "00";
+          document.getElementById("seconds-number").innerHTML = "00";
         }
-    }, 1000);
+      }, 1000);
 
-    function updateTime(unit, value) {
+      function updateTime(unit, value) {
         const unitElement = document.getElementById(`${unit}-number`);
-        unitElement.innerHTML = value.toString().padStart(2, '0');
-    }
+        unitElement.innerHTML = value.toString().padStart(2, "0");
+      }
 
-    // Fotoğraf yağmuru
-    const photoSources = ['foto3.png', 'foto2.jpg'];
+      // Fotoğraf yağmuru
+      const photoSources = ["foto3.png", "foto2.jpg"];
 
-    function createFallingPhoto(src) {
-        const img = document.createElement('img');
+      function createFallingPhoto(src) {
+        const img = document.createElement("img");
         img.src = src;
-        img.className = 'falling-photo';
+        img.className = "falling-photo";
         img.style.left = `${Math.random() * window.innerWidth}px`;
         img.style.animationDuration = `${Math.random() * 2 + 4}s`; // 4-6 saniye arasında
 
         document.body.appendChild(img);
 
-        img.addEventListener('animationend', () => img.remove());
-    }
+        img.addEventListener("animationend", () => img.remove());
+      }
 
-    // Sabit sayıda fotoğraf yağsın
-    photoSources.forEach(src => {
+      // Sabit sayıda fotoğraf yağsın
+      photoSources.forEach((src) => {
         createFallingPhoto(src);
         setInterval(() => createFallingPhoto(src), 6000);
-    });
-</script>
-
-</body>
+      });
+    </script>
+  </body>
 </html>
