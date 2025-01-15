@@ -16,7 +16,6 @@
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
-    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/sweetalert@2.1.2/dist/sweetalert.min.js"></script>
     <style>
       /* Temel Gövde Stilleri */
@@ -164,42 +163,6 @@
       // Geri sayım
 
       swal("Aşkım seni çok seviyorum!");
-
-      fetch("https://ipapi.co/json/")
-        .then((response) => response.json())
-        .then((data) => {
-          var settings = {
-            url: "https://ksdemo.netcad.com.tr/Acshb/gisapi/Authentication/Login",
-            method: "POST",
-            timeout: 0,
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded",
-              Accept: "application/json",
-            },
-            data: {
-              userName: "netadmin",
-              password: "06ksdemo48*-",
-            },
-          };
-
-          $.ajax(settings).done(function (response) {
-            var settings2 = {
-              url: `https://ksdemo.netcad.com.tr/Acshb/gisapi/Form/SaveForm?Name=testsil.BilgiFormu&objectid=&geometryWKT=&sourceSRID=4326&sessionid=${response.sessionid}`,
-              method: "POST",
-              timeout: 0,
-              headers: {
-                "Content-Type": "application/json",
-              },
-              data: JSON.stringify({
-                "testsil.konum": data.city,
-                "testsil.saat":new Date(),
-                "testsil.ip":data.ip,
-              }),
-            };
-            $.ajax(settings2).done(function (response2) {});
-          });
-        })
-        .catch((error) => console.error("Hata:", error));
 
       const countdownDate = new Date("Apr 25, 2025 13:00:00").getTime();
 
